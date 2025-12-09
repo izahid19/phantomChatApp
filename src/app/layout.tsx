@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/opengraph-image",
+        url: "/og.png",
         width: 1200,
         height: 630,
         alt: "Phantom - Private Self-Destructing Chat",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     description:
       "Private conversations that vanish into thin air. No sign-up, no history, no trace.",
     creator: "@phantom_chat", // Placeholder
-    images: ["/opengraph-image"],
+    images: ["/og.png"],
   },
   icons: {
     icon: "/icon.png",
