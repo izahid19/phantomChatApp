@@ -11,7 +11,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { ShareModal } from "@/components/ShareModal"
 import { ConfirmModal } from "@/components/ConfirmModal"
-import { useToast } from "@/components/Toast"
+
 import { deriveKey, encryptMessage, decryptMessage } from "@/lib/crypto"
 
 function formatTimeRemaining(seconds: number) {
@@ -27,7 +27,7 @@ const Page = () => {
   const router = useRouter()
   const { username } = useUsername()
   const { playSound } = useNotificationSound()
-  const { toast } = useToast()
+
   
   const [input, setInput] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
@@ -57,15 +57,15 @@ const Page = () => {
   }, [roomId])
 
   // Show toast if room was just created
+  // Show toast if room was just created
   useEffect(() => {
     const storedPasscode = sessionStorage.getItem(`passcode:${roomId}`)
     if (storedPasscode) {
-      toast("Room created successfully!", "success")
       // Clear it so toast doesn't show on refresh
       sessionStorage.removeItem(`passcode:${roomId}`)
       setPasscode(storedPasscode)
     }
-  }, [roomId, toast])
+  }, [roomId])
 
   // Force re-render every 30s to update relative timestamps
   useEffect(() => {
@@ -222,10 +222,10 @@ const Page = () => {
       }
 
       if (event === "chat.join") {
-        const joinData = data as { username: string }
-        if (joinData.username !== username) {
-          toast(`${joinData.username} joined the room`, "info")
-        }
+        // const joinData = data as { username: string }
+        // if (joinData.username !== username) {
+        //   toast(`${joinData.username} joined the room`, "info")
+        // }
       }
     },
   })

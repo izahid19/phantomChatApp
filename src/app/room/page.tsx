@@ -9,6 +9,8 @@ import { ThemeToggle } from "@/components/ThemeToggle"
 import { JoinRoomModal } from "@/components/JoinRoomModal"
 import { gsap } from "gsap"
 
+import { RoomCreationLoader } from "@/components/RoomCreationLoader"
+
 const Page = () => {
   return (
     <Suspense>
@@ -45,6 +47,8 @@ function Lobby() {
       }
     },
   })
+
+
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -100,6 +104,7 @@ function Lobby() {
 
   return (
     <main ref={containerRef} className="flex min-h-screen flex-col items-center justify-center p-4 bg-[var(--background)] overflow-hidden relative">
+      {isPending && <RoomCreationLoader />}
       {/* Back to home */}
       <button
         onClick={() => router.push("/")}
