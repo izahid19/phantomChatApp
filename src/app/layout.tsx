@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   ],
   creator: "Phantom Team",
   publisher: "Phantom Team",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://phantom-chat-app.vercel.app"),
   openGraph: {
     title: "Phantom - Private Self-Destructing Chat",
     description:
@@ -37,6 +37,14 @@ export const metadata: Metadata = {
     siteName: "Phantom",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Phantom - Private Self-Destructing Chat",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -44,6 +52,7 @@ export const metadata: Metadata = {
     description:
       "Private conversations that vanish into thin air. No sign-up, no history, no trace.",
     creator: "@phantom_chat", // Placeholder
+    images: ["/opengraph-image"],
   },
   icons: {
     icon: "/icon.png",
