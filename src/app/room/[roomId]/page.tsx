@@ -31,6 +31,7 @@ const Page = () => {
   
   const [input, setInput] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
   const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null)
@@ -175,6 +176,13 @@ const Page = () => {
     })
   }, [messages?.messages, cryptoKey, decryptedMessages])
 
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [messages?.messages, decryptedMessages, otherTyping])
+
   const { mutate: sendMessage, isPending } = useMutation({
     mutationFn: async ({ text }: { text: string }) => {
       let messageContent = text
@@ -185,11 +193,6 @@ const Page = () => {
       }
 
       await client.messages.send(roomId, { sender: username, text: messageContent })
-      setInput("")
-      sendTyping(false)
-      if (typingTimeoutRef.current) {
-        clearTimeout(typingTimeoutRef.current)
-      }
     },
   })
 
@@ -370,11 +373,21 @@ const Page = () => {
           )
         })}
 
-        {/* Typing indicator */}
+        {/* Scroll anchor */}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Typing indicator - fixed above input */}
+      <div className="px-4 h-6 flex items-center border-t border-[var(--card-border)] bg-[var(--card-bg)]">
         {otherTyping && (
-          <div className="flex items-center gap-2 text-[var(--muted)]">
+          <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-blue-500">{otherTyping}</span>
-            <span className="text-xs animate-pulse">is typing...</span>
+            <span className="text-xs text-[var(--muted)]">is typing</span>
+            <span className="flex gap-1">
+              <span className="w-1.5 h-1.5 bg-[var(--muted)] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-1.5 h-1.5 bg-[var(--muted)] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-1.5 h-1.5 bg-[var(--muted)] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            </span>
           </div>
         )}
       </div>
@@ -392,7 +405,13 @@ const Page = () => {
               value={input}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && input.trim()) {
-                  sendMessage({ text: input })
+                  const textToSend = input
+                  setInput("")
+                  sendTyping(false)
+                  if (typingTimeoutRef.current) {
+                    clearTimeout(typingTimeoutRef.current)
+                  }
+                  sendMessage({ text: textToSend })
                   inputRef.current?.focus()
                 }
               }}
@@ -405,12 +424,18 @@ const Page = () => {
           <button
             onClick={() => {
               if (input.trim()) {
-                sendMessage({ text: input })
+                const textToSend = input
+                setInput("")
+                sendTyping(false)
+                if (typingTimeoutRef.current) {
+                  clearTimeout(typingTimeoutRef.current)
+                }
+                sendMessage({ text: textToSend })
                 inputRef.current?.focus()
               }
             }}
             disabled={!input.trim() || isPending}
-            className="bg-[var(--card-border)] text-[var(--muted)] px-4 md:px-6 text-sm font-bold hover:text-[var(--foreground)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="bg-green-600 hover:bg-green-500 text-white px-4 md:px-6 text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             SEND
           </button>

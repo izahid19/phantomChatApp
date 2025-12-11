@@ -72,7 +72,7 @@ export function ShareModal({ isOpen, onClose, roomId, passcode }: ShareModalProp
           <div className="space-y-2">
             <label className="text-sm text-[var(--muted)]">Passcode</label>
             <div className="flex items-center gap-2">
-              <div className="flex-1 bg-[var(--background)] border border-[var(--card-border)] p-3 text-sm text-[var(--foreground)] font-mono tracking-widest text-center">
+              <div className="flex-1 bg-[var(--background)] border border-[var(--card-border)] p-3 text-sm text-[var(--foreground)] font-mono tracking-widest">
                 {passcode}
               </div>
               <button
